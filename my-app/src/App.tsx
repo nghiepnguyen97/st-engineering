@@ -134,6 +134,7 @@ const App: React.FC = () => {
 	const handleSearch = () => {
 		if (searchColumn && searchData) {
 			filters.page = 1;
+			filters.properties.searchStartWith = undefined as any;
 			filters.properties.search = {
 				column: searchColumn,
 				data: searchData
@@ -146,6 +147,7 @@ const App: React.FC = () => {
 	const handleSearchStartsWith = () => {
 		if (searchColumn && searchData) {
 			filters.page = 1;
+			filters.properties.search = undefined as any;
 			filters.properties.searchStartWith = {
 				column: searchColumn,
 				data: searchData
@@ -159,14 +161,13 @@ const App: React.FC = () => {
 	const clearFilters = () => {
 		setSearchData('');
 		setSearchColumn('');
-		setTableData([]);
+		fetchData();
 	};
 
 	return (
 		<Container fluid>
 			<Row>
 				<Col sm={12} md={8}>
-					{/* <input type="file" onChange={handleFileUpload} /> */}
 					<Row>
 						<Col>
 							<input type="file" onChange={handleFileUpload} />

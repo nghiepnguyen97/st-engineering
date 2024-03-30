@@ -1,9 +1,9 @@
+import * as _ from 'lodash';
+import * as fs from 'fs';
 import CsvFileHelper from '../../../utils/csv-file';
 import { IPaginateResponse } from '../../../utils/response/response';
 import { IFileData } from './interfaces/data-response';
 import { IGetListFilters, SearchOperationEnum } from './interfaces/filter';
-import * as _ from 'lodash';
-import * as fs from 'fs';
 
 export default class FileService {
     static instance: FileService;
@@ -56,7 +56,7 @@ export default class FileService {
                 search.value = filters.properties.searchStartWith;
             }
 
-            if (search.operation && search.value) {
+            if (search.operation && search.operation === SearchOperationEnum.Search && search.value) {
                 fileData = fileData.filter(item => {
                     if (item[search.value.column] && String(item[search.value.column]).includes(search.value.data)) {
                         return item;
@@ -65,10 +65,42 @@ export default class FileService {
                     return false;
                 })
             }
+
+            if (search.operation && search.operation === SearchOperationEnum.SearchStartWith && search.value) {
+                let indexes: number[] = [];
+                switch (search.value.column) {
+                    case 'postId': {
+                        indexes = global.postIdTree.search(search.value.data);
+                        break;
+                    }
+
+                    case 'id': {
+                        indexes = global.idTree.search(search.value.data);
+                        break;
+                    }
+
+                    case 'name': {
+                        indexes = global.nameTree.search(search.value.data);
+                        break;
+                    }
+
+                    case 'email': {
+                        indexes = global.emailTree.search(search.value.data);
+                        break;
+                    }
+
+                    case 'body': {
+                        indexes = global.bodyTree.search(search.value.data);
+                        break;
+                    }
+                }
+
+                fileData = !indexes.length ? [] : indexes.map(index => fileData[index]);
+            }
         }
 
         return {
-            pages: Math.round(fileData.length / LIMIT),
+            pages: Math.ceil(fileData.length / LIMIT),
             current: filters.page || 1,
             total: fileData.length,
             data: fileData.reduce((acc, current, index) => {

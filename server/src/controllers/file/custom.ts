@@ -8,6 +8,7 @@ import { DataResponse } from '../../utils/response';
 import { IFileData } from '../../resources/services/file/interfaces/data-response';
 import { CONFIGS } from '../../modules/global/variable';
 import { REDIS_KEYS } from '../../modules/redis/key';
+import { PrefixTree } from './prefix-tree';
 
 /**
  * FileCustomResponse
@@ -47,6 +48,50 @@ export default class FileCustomResponse {
             if (this.isValidFileData(fileData[0])) {
                 return DataResponse.errors('File is invalid');
             }
+
+            const postIdTree = new PrefixTree();
+            const idTree = new PrefixTree();
+            const nameTree = new PrefixTree();
+            const emailTree = new PrefixTree();
+            const bodyTree = new PrefixTree();
+
+            for (let i = 0; i < fileData.length; i++) {
+                let data = fileData[i];
+                for (const key in data) {
+                    switch (key) {
+                        case 'postId': {
+                            postIdTree.insert(String(data.postId), i);
+                            break;
+                        }
+
+                        case 'id': {
+                            idTree.insert(String(data.id), i);
+                            break;
+                        }
+
+                        case 'name': {
+                            nameTree.insert(String(data.name), i);
+                            break;
+                        }
+
+                        case 'email': {
+                            emailTree.insert(String(data.email), i);
+                            break;
+                        }
+
+                        case 'body': {
+                            bodyTree.insert(String(data.body), i);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            global.postIdTree = postIdTree;
+            global.idTree = idTree;
+            global.nameTree = nameTree;
+            global.emailTree = emailTree;
+            global.bodyTree = bodyTree;
 
             await APP.mRedis.set(REDIS_KEYS.uploadProcess, 'complete');
 
