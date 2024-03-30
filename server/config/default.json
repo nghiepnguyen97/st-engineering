@@ -1,0 +1,12 @@
+{
+    "env": "default",
+    "port": 3003,
+    "server": {
+        "fileUpload": "./file-uploads"
+    },
+    "redis": {
+        "host": "localhost",
+        "port": 6379,
+        "password": "P@ssw0rd123"
+    }
+}

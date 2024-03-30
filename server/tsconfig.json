@@ -1,0 +1,23 @@
+{
+   "compilerOptions": {
+      "lib": [
+         "dom",
+         "es7"
+      ],
+      "target": "es2020",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "outDir": "./dist",
+      "skipLibCheck": false,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "sourceMap": true,
+      "baseUrl": "src",
+      "rootDir": "src",
+      "resolveJsonModule": true,
+      "esModuleInterop": true
+   },
+   "include": [
+      "src/**/*"
+   ]
+}
