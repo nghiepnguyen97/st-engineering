@@ -193,7 +193,7 @@ const App: React.FC = () => {
 							value={searchColumn}
 							onChange={(e) => setSearchColumn(e.target.value)}
 						>
-							<option value="">All</option>
+							<option value="">Select</option>
 							{columns.map(col => (
 								<option key={col.dataField} value={col.dataField}>
 									{col.text}
