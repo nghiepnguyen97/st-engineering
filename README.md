@@ -8,10 +8,12 @@ Make sure that your device is installed redis already, if not please install it 
 # node
 Make sure that your node version is equal or above v16
 # server
-Cd to sever directory and run "yarn install" to install libs
+Cd to server directory and run "yarn install" to install libs
 Run "yarn start" to start the server after all libs is installed already
 # front end
 Cd to my-app directory and run "yarn install" to install libs
 Run "yarn start" to start the font-end after all libs is installed already
 # end
 Go to http://localhost:3000/
+# server unit test
+Cd to server directory and run "yarn test" to run basic unit test in server
